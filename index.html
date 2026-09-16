@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Juntos hacemos del colegio un lugar mejor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink-bg: #fff2f8;
+    --pink-soft: #ffdcec;
+    --pink-mid: #ff9dc4;
+    --pink-strong: #ff5fa0;
+    --lav-soft: #ecdcff;
+    --lav-mid: #c79bf0;
+    --lav-strong: #9b5fd6;
+    --plum: #4a2350;
+    --cream: #fffaf6;
+    --gold: #ffcf6b;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Quicksand', sans-serif;
+    background:
+      radial-gradient(circle at 10% 15%, var(--lav-soft) 0%, transparent 40%),
+      radial-gradient(circle at 90% 10%, var(--pink-soft) 0%, transparent 45%),
+      radial-gradient(circle at 50% 100%, var(--pink-soft) 0%, transparent 50%),
+      var(--pink-bg);
+    color:var(--plum);
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+  }
+  h1,h2,h3,.display{font-family:'Fredoka', sans-serif;}
+
+  /* floating decorations */
+  .float-layer{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+  .drift{position:absolute;opacity:0.5;animation:drift linear infinite;}
+  @keyframes drift{
+    0%{transform:translateY(110vh) rotate(0deg);}
+    100%{transform:translateY(-10vh) rotate(360deg);}
+  }
+
+  .wrap{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:0 20px 80px;}
+
+  /* HERO */
+  .hero{
+    padding:38px 20px 28px;
+    text-align:center;
+    position:relative;
+  }
+  .badge-row{display:flex;justify-content:center;gap:14px;margin-bottom:6px;}
+  .mascots{display:flex;justify-content:center;align-items:flex-end;gap:-10px;margin-bottom:8px;}
+  .hero h1{
+    font-size:2.5rem;
+    line-height:1.15;
+    margin:6px 0 4px;
+    color:var(--pink-strong);
+    text-shadow: 2px 2px 0 #fff, -1px -1px 0 #fff;
+  }
+  .hero .sub-banner{
+    display:inline-block;
+    background:linear-gradient(90deg, var(--lav-mid), var(--pink-mid));
+    color:#fff;
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:1.15rem;
+    padding:8px 26px;
+    border-radius:999px;
+    margin-top:6px;
+    box-shadow:0 6px 0 rgba(155,95,214,0.25);
+  }
+  .vota-lockup{
+    margin-top:22px;
+    display:inline-flex;
+    align-items:center;
+    gap:14px;
+    padding:16px 34px;
+    background:radial-gradient(circle at 30% 25%, #fff, var(--lav-soft) 75%);
+    border:4px dashed var(--lav-mid);
+    border-radius:28px;
+    animation:pulse 2.6s ease-in-out infinite;
+  }
+  .vota-word{
+    font-family:'Fredoka',sans-serif;
+    font-weight:700;
+    font-size:1.8rem;
+    letter-spacing:2px;
+    color:var(--lav-strong);
+    -webkit-text-stroke:1.5px var(--plum);
+    text-shadow:2px 2px 0 rgba(155,95,214,0.25);
+  }
+  .vota-number{
+    font-family:'Fredoka',sans-serif;
+    font-weight:700;
+    font-size:3.2rem;
+    line-height:1;
+    color:var(--pink-strong);
+    -webkit-text-stroke:2px var(--plum);
+    text-shadow:3px 3px 0 rgba(255,95,160,0.3);
+  }
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+
+  /* NAV TABS */
+  .tabs{
+    position:sticky; top:0; z-index:5;
+    display:flex; gap:8px;
+    background:rgba(255,250,246,0.85);
+    backdrop-filter:blur(6px);
+    padding:12px 8px;
+    border-radius:0 0 22px 22px;
+    box-shadow:0 4px 14px rgba(155,95,214,0.12);
+    margin-bottom:22px;
+  }
+  .tab{
+    flex:1;
+    text-align:center;
+    padding:12px 8px;
+    border-radius:16px;
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:0.92rem;
+    color:var(--lav-strong);
+    background:transparent;
+    border:2px solid transparent;
+    cursor:pointer;
+    transition:transform .15s ease, background .2s ease, color .2s ease;
+    user-select:none;
+  }
+  .tab .emo{display:block;font-size:1.35rem;margin-bottom:2px;}
+  .tab.active{
+    background:linear-gradient(135deg, var(--pink-mid), var(--lav-mid));
+    color:#fff;
+    transform:translateY(-2px);
+    box-shadow:0 5px 0 rgba(155,95,214,0.25);
+  }
+  .tab:hover:not(.active){background:var(--pink-soft);}
+
+  .panel{display:none;animation:fadeUp .35s ease;}
+  .panel.active{display:block;}
+  @keyframes fadeUp{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+
+  section h2{
+    font-size:1.4rem;
+    color:var(--pink-strong);
+    text-align:center;
+    margin:4px 0 6px;
+  }
+  section > p.lead{
+    text-align:center;
+    color:#7a4a86;
+    margin:0 0 22px;
+    font-weight:600;
+  }
+
+  /* PROPUESTAS ACCORDION */
+  .proposal{
+    background:var(--cream);
+    border:2px solid var(--pink-soft);
+    border-radius:20px;
+    margin-bottom:12px;
+    overflow:hidden;
+    transition:border-color .2s ease;
+  }
+  .proposal.open{border-color:var(--pink-mid);}
+  .proposal-head{
+    display:flex; align-items:center; gap:12px;
+    padding:14px 16px;
+    cursor:pointer;
+  }
+  .prop-num{
+    flex:0 0 auto;
+    width:34px;height:34px;
+    border-radius:50%;
+    background:linear-gradient(135deg, var(--pink-mid), var(--lav-mid));
+    color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fredoka',sans-serif; font-weight:700;
+  }
+  .proposal-head span.title{
+    flex:1;
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    font-size:1.02rem;
+    color:var(--plum);
+  }
+  .chev{
+    transition:transform .3s ease;
+    color:var(--pink-mid);
+    font-size:1.1rem;
+  }
+  .proposal.open .chev{transform:rotate(180deg);}
+  .proposal-body{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .4s ease, padding .3s ease;
+    padding:0 18px;
+  }
+  .proposal.open .proposal-body{padding:0 18px 18px;}
+  .proposal-body p{margin:0 0 10px; line-height:1.55; color:#5a3560; font-size:0.95rem;}
+  .proposal-body p:last-child{margin-bottom:0;}
+
+  .compromiso{
+    margin-top:24px;
+    background:linear-gradient(135deg, var(--lav-soft), var(--pink-soft));
+    border-radius:22px;
+    padding:20px 22px;
+    text-align:center;
+  }
+  .compromiso h3{margin:0 0 8px; color:var(--lav-strong);}
+  .compromiso p{margin:0; line-height:1.6; color:#5a3560; font-size:0.95rem;}
+
+  /* GALERIA */
+  .upload-lock{
+    background:var(--cream);
+    border:2px dashed var(--lav-mid);
+    border-radius:20px;
+    padding:22px 20px;
+    text-align:center;
+    margin-bottom:22px;
+  }
+  .lock-text{
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    color:var(--lav-strong);
+    margin:0 0 14px;
+    font-size:0.95rem;
+  }
+  .upload-lock input[type=password]{
+    width:100%; max-width:260px;
+    padding:10px 14px;
+    border-radius:14px;
+    border:2px solid var(--pink-soft);
+    font-family:'Quicksand',sans-serif;
+    font-size:0.9rem;
+    text-align:center;
+    margin-right:8px;
+  }
+  .upload-lock input[type=password]:focus{outline:none; border-color:var(--pink-mid);}
+  .unlock-btn{
+    background:linear-gradient(135deg, var(--lav-mid), var(--lav-strong));
+    color:#fff;
+    border:none;
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    padding:10px 22px;
+    border-radius:999px;
+    cursor:pointer;
+    margin-top:10px;
+    box-shadow:0 4px 0 rgba(155,95,214,0.3);
+  }
+  .lock-error{
+    color:var(--pink-strong);
+    font-size:0.8rem;
+    font-weight:600;
+    margin:10px 0 0;
+    min-height:1em;
+  }
+  .upload-box{
+    background:var(--cream);
+    border:2px dashed var(--lav-mid);
+    border-radius:20px;
+    padding:20px;
+    text-align:center;
+    margin-bottom:22px;
+  }
+  .upload-box input[type=file]{display:none;}
+  .upload-btn{
+    display:inline-block;
+    background:linear-gradient(135deg, var(--pink-mid), var(--pink-strong));
+    color:#fff;
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    padding:10px 22px;
+    border-radius:999px;
+    cursor:pointer;
+    box-shadow:0 4px 0 rgba(255,95,160,0.3);
+    transition:transform .15s ease;
+  }
+  .upload-btn:hover{transform:translateY(-2px);}
+  .upload-box input[type=text]{
+    width:100%; max-width:360px;
+    margin:14px auto 0;
+    display:block;
+    padding:10px 14px;
+    border-radius:14px;
+    border:2px solid var(--pink-soft);
+    font-family:'Quicksand',sans-serif;
+    font-size:0.9rem;
+  }
+  .upload-box input[type=text]:focus{outline:none; border-color:var(--pink-mid);}
+  .preview-thumb{margin-top:14px;}
+  .preview-thumb img{max-width:140px; border-radius:14px; box-shadow:0 4px 10px rgba(0,0,0,0.12);}
+  .save-photo-btn{
+    margin-top:12px;
+    background:var(--lav-strong);
+    color:#fff;
+    border:none;
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    padding:9px 20px;
+    border-radius:999px;
+    cursor:pointer;
+    display:none;
+  }
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(140px,1fr));
+    gap:14px;
+  }
+  .gallery-item{
+    background:var(--cream);
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 4px 10px rgba(155,95,214,0.15);
+    position:relative;
+  }
+  .gallery-item img{width:100%; height:130px; object-fit:cover; display:block;}
+  .gallery-item .cap{
+    padding:8px 10px;
+    font-size:0.8rem;
+    font-weight:600;
+    color:#7a4a86;
+  }
+  .gallery-empty, .buzon-empty{
+    text-align:center;
+    color:#a97cb8;
+    font-weight:600;
+    padding:30px 10px;
+  }
+
+  /* BUZON */
+  .buzon-box{
+    background:var(--cream);
+    border-radius:20px;
+    padding:20px;
+    margin-bottom:22px;
+    border:2px solid var(--lav-soft);
+  }
+  .buzon-box textarea{
+    width:100%;
+    min-height:100px;
+    border-radius:16px;
+    border:2px solid var(--pink-soft);
+    padding:12px 14px;
+    font-family:'Quicksand',sans-serif;
+    font-size:0.95rem;
+    resize:vertical;
+  }
+  .buzon-box textarea:focus{outline:none; border-color:var(--pink-mid);}
+  .buzon-anon-note{
+    font-size:0.78rem;
+    color:#a97cb8;
+    margin:6px 2px 12px;
+  }
+  .send-btn{
+    background:linear-gradient(135deg, var(--lav-mid), var(--lav-strong));
+    color:#fff;
+    border:none;
+    font-family:'Fredoka',sans-serif;
+    font-weight:600;
+    padding:10px 26px;
+    border-radius:999px;
+    cursor:pointer;
+    box-shadow:0 4px 0 rgba(155,95,214,0.3);
+    transition:transform .15s ease;
+  }
+  .send-btn:hover{transform:translateY(-2px);}
+  .send-row{display:flex; gap:10px; flex-wrap:wrap; justify-content:center;}
+  .msg-list{display:flex; flex-direction:column; gap:10px;}
+  .msg-card{
+    background:var(--cream);
+    border-left:5px solid var(--pink-mid);
+    border-radius:12px;
+    padding:12px 14px;
+    font-size:0.9rem;
+    color:#5a3560;
+    line-height:1.5;
+    box-shadow:0 3px 8px rgba(155,95,214,0.1);
+  }
+  .msg-time{display:block; font-size:0.72rem; color:#c090cc; margin-top:6px; font-weight:600;}
+
+  .toast{
+    position:fixed;
+    bottom:22px; left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:var(--plum);
+    color:#fff;
+    padding:10px 20px;
+    border-radius:999px;
+    font-family:'Fredoka',sans-serif;
+    font-size:0.85rem;
+    opacity:0;
+    transition:all .3s ease;
+    z-index:50;
+    pointer-events:none;
+  }
+  .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+  footer{
+    text-align:center;
+    color:#c090cc;
+    font-size:0.78rem;
+    margin-top:30px;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .drift, .vote{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="float-layer" id="floatLayer"></div>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1>Juntos hacemos<br>del colegio un lugar mejor</h1>
+    <span class="sub-banner">Personería estudiantil</span>
+    <div class="vota-lockup">
+      <span class="vota-word">VOTA</span>
+      <span class="vota-number">01</span>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="propuestas"><span class="emo">💌</span>Propuestas</div>
+    <div class="tab" data-tab="galeria"><span class="emo">📸</span>Galería</div>
+    <div class="tab" data-tab="buzon"><span class="emo">📮</span>Buzón</div>
+  </div>
+
+  <!-- PROPUESTAS -->
+  <div class="panel active" id="panel-propuestas">
+    <section>
+      <h2>Nuestras propuestas</h2>
+      <p class="lead">Toca una propuesta para ver en qué consiste</p>
+      <div id="proposalList"></div>
+      <div class="compromiso">
+        <h3>Nuestro compromiso</h3>
+        <p>Todas estas propuestas tienen como objetivo aportar al bienestar, la convivencia, la integración y el desarrollo académico de nuestra comunidad educativa. Queremos que la Personería no sea solamente una figura encargada de representar a los estudiantes, sino también un espacio de escucha, servicio, integración y cercanía con cada uno de ustedes.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- GALERIA -->
+  <div class="panel" id="panel-galeria">
+    <section>
+      <h2>Galería de cumplimiento</h2>
+      <p class="lead">Fotos que muestran las propuestas hechas realidad</p>
+      <div class="upload-lock" id="uploadLock">
+        <p class="lock-text">🔒 Solo el equipo de Personería puede subir fotos</p>
+        <input type="password" id="galleryCode" placeholder="Código de acceso" maxlength="30">
+        <button class="unlock-btn" id="unlockBtn">Desbloquear</button>
+        <p class="lock-error" id="lockError"></p>
+      </div>
+      <div class="upload-box" id="uploadBox" style="display:none;">
+        <label class="upload-btn" for="photoInput">Subir una foto 📷</label>
+        <input type="file" id="photoInput" accept="image/*">
+        <input type="text" id="photoCaption" placeholder="¿De qué propuesta es esta foto?" maxlength="80">
+        <div class="preview-thumb" id="previewThumb"></div>
+        <button class="save-photo-btn" id="savePhotoBtn">Guardar en la galería</button>
+      </div>
+      <div class="gallery-grid" id="galleryGrid"></div>
+    </section>
+  </div>
+
+  <!-- BUZON -->
+  <div class="panel" id="panel-buzon">
+    <section>
+      <h2>Buzón anónimo</h2>
+      <p class="lead">Cuéntanos problemas, ideas o comentarios, sin dejar tu nombre</p>
+      <div class="buzon-box">
+        <textarea id="buzonText" placeholder="Escribe aquí lo que quieras compartir..."></textarea>
+        <div class="buzon-anon-note">Este mensaje es totalmente anónimo: solo se tendrá en cuenta lo que escribas, no quién lo envía. No se guarda en la página ni pide tu nombre. Al tocar un botón se abrirá WhatsApp o tu correo con el mensaje ya escrito, listo para enviar.</div>
+        <div class="send-row">
+          <button class="send-btn wsp-btn" id="sendWspBtn">Enviar</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>Hecho con cariño para nuestro colegio 💜🩷</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDlsyisWHdAJgzCuSWsQ0oHEVXE2WqTOKU",
+  authDomain: "personeria-19d03.firebaseapp.com",
+  projectId: "personeria-19d03",
+  storageBucket: "personeria-19d03.firebasestorage.app",
+  messagingSenderId: "150328426383",
+  appId: "1:150328426383:web:facae853a2b2e10958d5fa",
+  measurementId: "G-NJ19TBF596"
+};
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
+const galleryCol = collection(db, "gallery_photos");
+
+/* ---------- floating background decorations ---------- */
+(function(){
+  const layer = document.getElementById('floatLayer');
+  const shapes = ['💗','⭐','🎀','💜'];
+  for(let i=0;i<14;i++){
+    const el = document.createElement('div');
+    el.className='drift';
+    el.textContent = shapes[i % shapes.length];
+    el.style.left = Math.random()*100+'vw';
+    el.style.fontSize = (12+Math.random()*16)+'px';
+    el.style.animationDuration = (14+Math.random()*14)+'s';
+    el.style.animationDelay = (-Math.random()*20)+'s';
+    layer.appendChild(el);
+  }
+})();
+
+/* ---------- tabs ---------- */
+const tabs = document.querySelectorAll('.tab');
+const panels = document.querySelectorAll('.panel');
+tabs.forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    tabs.forEach(t=>t.classList.remove('active'));
+    panels.forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-'+tab.dataset.tab).classList.add('active');
+  });
+});
+
+/* ---------- toast ---------- */
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2200);
+}
+
+/* ---------- proposals data ---------- */
+const proposals = [
+  {
+    title:"Caja de cartas para nuestros profesores",
+    body:[
+      "Crear una Caja de Cartas en la que los estudiantes puedan dejar mensajes dirigidos a sus profesores.",
+      "La idea es tener un espacio para expresar agradecimiento, cariño, reconocimiento o simplemente dedicar unas palabras bonitas a aquellos profesores que hacen parte de nuestro día a día.",
+      "Desde Personería se podrían recoger las cartas y entregarlas posteriormente a los docentes en una fecha especial. Sería una manera sencilla y bonita de reconocer su trabajo y recordarles que también valoramos todo lo que hacen por nosotros."
+    ]
+  },
+  {
+    title:"Bolsita de agua caliente para los cólicos",
+    body:[
+      "Contar con una bolsita de agua caliente para los cólicos, que pueda estar disponible para las estudiantes que durante la jornada escolar presenten este tipo de molestias.",
+      "La finalidad sería brindar un apoyo sencillo y un momento de comodidad cuando alguna estudiante lo necesite. El calor puede ayudar a aliviar los cólicos y, de esta manera, se podría ofrecer una alternativa práctica dentro del colegio.",
+      "Esta propuesta se realizaría bajo las condiciones y recomendaciones establecidas por la institución, procurando siempre que su uso sea seguro y responsable."
+    ]
+  },
+  {
+    title:"Descanso recreativo para primaria",
+    body:[
+      "Realizar un descanso recreativo especial para los estudiantes de primaria, con juegos y actividades diferentes a las que normalmente realizan durante el descanso. Esta actividad se realizaría una vez al mes.",
+      "Se podrían organizar juegos tradicionales, dinámicas, carreras, actividades con música y otras actividades apropiadas para las diferentes edades."
+    ]
+  },
+  {
+    title:"Celebración del Día de la Mujer en Pisoje",
+    body:[
+      "Para la celebración del Día de la Mujer, organizar una salida a Pisoje con diferentes actividades recreativas para los estudiantes.",
+      "La jornada podría comenzar con una yincana, en la que los estudiantes participen por grupos y puedan compartir de una manera diferente. Posteriormente, se podría realizar un espacio de recreación en la piscina y finalizar con un pequeño refrigerio para los estudiantes.",
+      "Para facilitar el acompañamiento de los niños más pequeños y apoyar a los docentes, se podría organizar que dos estudiantes de grado 11° ayuden a acompañar a los niños de cada grupo, siempre siguiendo las indicaciones de los profesores.",
+      "En el caso de los niños de preescolar y los grados más pequeños, se podría realizar una actividad recreativa dentro del colegio, contando con el apoyo de un recreacionista o payaso, de manera que ellos también puedan disfrutar de una celebración especial adecuada para su edad.",
+      "Esta propuesta estaría sujeta a la autorización de las directivas, la disponibilidad de Pisoje y las condiciones logísticas necesarias."
+    ]
+  },
+  {
+    title:"Salida al cine por el Día del Niño",
+    body:[
+      "Realizar una salida al cine para celebrar el Día del Niño, especialmente pensada para los estudiantes de primaria.",
+      "La idea es brindarles un espacio diferente para celebrar este día, compartir con sus compañeros y disfrutar de una actividad especial fuera de la rutina escolar.",
+      "La salida podría incluir un pequeño refrigerio y se organizaría teniendo en cuenta los permisos, la disponibilidad y las posibilidades de la institución."
+    ]
+  },
+  {
+    title:"Baile deportivo",
+    body:[
+      "Realizar una jornada de baile deportivo dentro del colegio, en la que puedan participar tanto los estudiantes de primaria como las estudiantes de bachillerato.",
+      "La actividad podría incluir diferentes tipos de baile, ejercicios, aeróbicos o dinámicas de movimiento, buscando que los estudiantes puedan realizar actividad física de una manera divertida.",
+      "Además de promover hábitos saludables, sería una oportunidad para compartir entre los diferentes grados y salir un poco de la rutina escolar."
+    ]
+  },
+  {
+    title:"Semana de la Ciencia como alternativa al examen de periodo",
+    body:[
+      "Teniendo en cuenta que el cuarto periodo académico suele ser una etapa bastante exigente para los estudiantes, propongo que la Semana de la Ciencia tenga un componente evaluativo que pueda representar la nota correspondiente al examen de periodo.",
+      "La intención no sería eliminar la evaluación de los temas vistos durante el periodo, sino buscar una forma diferente de demostrar los conocimientos adquiridos.",
+      "Por esta razón, los docentes podrían realizar un quiz corto, una actividad evaluativa o algún ejercicio relacionado con los temas trabajados, mientras que la participación y el trabajo realizado durante la Semana de la Ciencia podrían complementar dicha valoración.",
+      "De esta manera, se buscaría que los estudiantes puedan aprender y demostrar sus conocimientos mediante una experiencia más dinámica y relacionada con la ciencia, sin dejar de cumplir con los objetivos académicos de cada asignatura."
+    ]
+  },
+  {
+    title:"Reconocimiento al desempeño académico por asignatura",
+    body:[
+      "Proponer que, en cada periodo académico, durante la izada de bandera, se realice un reconocimiento especial a los estudiantes que hayan obtenido un promedio de 4.6 o superior en una asignatura específica.",
+      "Este reconocimiento estaría dirigido a aquellos estudiantes que, aunque no alcancen el promedio general necesario para izar bandera, hayan demostrado un excelente desempeño en una materia determinada.",
+      "Por ejemplo, si un estudiante obtiene un promedio de 4.6 o superior en Biología, podría recibir un reconocimiento por su desempeño destacado en esta asignatura, aunque sus demás calificaciones no le permitan alcanzar el promedio general requerido para izar bandera.",
+      "La intención es valorar también los talentos, esfuerzos y fortalezas particulares de cada estudiante, motivándolos a continuar destacándose en aquellas áreas en las que tienen un buen desempeño académico.",
+      "El reconocimiento podría realizarse de manera sencilla durante la izada de bandera, mediante un diploma o mención."
+    ]
+  }
+];
+
+const listEl = document.getElementById('proposalList');
+proposals.forEach((p, idx)=>{
+  const div = document.createElement('div');
+  div.className='proposal';
+  div.innerHTML = `
+    <div class="proposal-head">
+      <div class="prop-num">${idx+1}</div>
+      <span class="title">${p.title}</span>
+      <span class="chev">▾</span>
+    </div>
+    <div class="proposal-body">
+      ${p.body.map(par=>`<p>${par}</p>`).join('')}
+    </div>
+  `;
+  const head = div.querySelector('.proposal-head');
+  const body = div.querySelector('.proposal-body');
+  head.addEventListener('click', ()=>{
+    const isOpen = div.classList.contains('open');
+    // close all
+    document.querySelectorAll('.proposal').forEach(pr=>{
+      pr.classList.remove('open');
+      pr.querySelector('.proposal-body').style.maxHeight = null;
+    });
+    if(!isOpen){
+      div.classList.add('open');
+      body.style.maxHeight = body.scrollHeight + 40 + 'px';
+    }
+  });
+  listEl.appendChild(div);
+});
+
+/* ---------- galeria: acceso restringido ---------- */
+const GALLERY_ACCESS_CODE = "CROCS";
+document.getElementById('unlockBtn').addEventListener('click', ()=>{
+  const input = document.getElementById('galleryCode').value.trim();
+  const err = document.getElementById('lockError');
+  if(input.toUpperCase() === GALLERY_ACCESS_CODE){
+    document.getElementById('uploadLock').style.display = 'none';
+    document.getElementById('uploadBox').style.display = 'block';
+    err.textContent = '';
+  } else {
+    err.textContent = 'Código incorrecto 😿';
+  }
+});
+document.getElementById('galleryCode').addEventListener('keydown', (e)=>{
+  if(e.key === 'Enter') document.getElementById('unlockBtn').click();
+});
+
+/* ---------- galeria (persistente en Firestore) ---------- */
+let pendingPhotoDataUrl = null;
+
+function resizeImage(file, maxDim){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = (e)=>{
+      const img = new Image();
+      img.onload = ()=>{
+        let {width, height} = img;
+        if(width > height && width > maxDim){
+          height = Math.round(height * (maxDim/width));
+          width = maxDim;
+        } else if(height > maxDim){
+          width = Math.round(width * (maxDim/height));
+          height = maxDim;
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', 0.65));
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+document.getElementById('photoInput').addEventListener('change', async (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  try{
+    const dataUrl = await resizeImage(file, 800);
+    if(dataUrl.length > 900000){
+      showToast('La foto es muy pesada, intenta con otra 😿');
+      return;
+    }
+    pendingPhotoDataUrl = dataUrl;
+    document.getElementById('previewThumb').innerHTML = `<img src="${dataUrl}">`;
+    document.getElementById('savePhotoBtn').style.display = 'inline-block';
+  }catch(err){
+    showToast('No se pudo cargar la imagen 😿');
+  }
+});
+
+document.getElementById('savePhotoBtn').addEventListener('click', async ()=>{
+  if(!pendingPhotoDataUrl) return;
+  const caption = document.getElementById('photoCaption').value.trim() || 'Cumplimiento de propuesta';
+  try{
+    await addDoc(galleryCol, {
+      dataUrl: pendingPhotoDataUrl,
+      caption,
+      createdAt: serverTimestamp()
+    });
+    pendingPhotoDataUrl = null;
+    document.getElementById('previewThumb').innerHTML = '';
+    document.getElementById('photoCaption').value = '';
+    document.getElementById('savePhotoBtn').style.display = 'none';
+    document.getElementById('photoInput').value = '';
+    showToast('¡Foto agregada a la galería! 💗');
+    loadGallery();
+  }catch(err){
+    console.error(err);
+    showToast('No se pudo guardar la foto 😿');
+  }
+});
+
+async function loadGallery(){
+  const grid = document.getElementById('galleryGrid');
+  try{
+    const q = query(galleryCol, orderBy('createdAt', 'desc'));
+    const snap = await getDocs(q);
+    if(snap.empty){
+      grid.innerHTML = '<div class="gallery-empty">Todavía no hay fotos. ¡Sé el primero en subir una! 📷</div>';
+      return;
+    }
+    grid.innerHTML = '';
+    snap.forEach(docSnap=>{
+      const data = docSnap.data();
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.innerHTML = `<img src="${data.dataUrl}"><div class="cap">${data.caption}</div>`;
+      grid.appendChild(item);
+    });
+  }catch(err){
+    console.error(err);
+    grid.innerHTML = '<div class="gallery-empty">No se pudo cargar la galería 😿</div>';
+  }
+}
+
+/* ---------- buzon anonimo: envío directo por WhatsApp y correo ---------- */
+const BUZON_WHATSAPP_NUMBER = "573205897796";
+
+document.getElementById('sendWspBtn').addEventListener('click', ()=>{
+  const text = document.getElementById('buzonText').value.trim();
+  if(!text){ showToast('Escribe algo antes de enviar 🎀'); return; }
+  const url = `https://wa.me/${BUZON_WHATSAPP_NUMBER}?text=${encodeURIComponent('Mensaje del buzón anónimo de Personería.\nEste mensaje es totalmente anónimo: solo se tendrá en cuenta el contenido, no quién lo envía.\n\n' + text)}`;
+  window.open(url, '_blank');
+});
+
+/* ---------- init ---------- */
+loadGallery();
+</script>
+</body>
+</html>
