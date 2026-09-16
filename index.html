@@ -317,6 +317,18 @@
     box-shadow:0 4px 10px rgba(155,95,214,0.15);
     position:relative;
   }
+  .delete-photo-btn{
+    position:absolute;
+    top:6px; right:6px;
+    width:28px; height:28px;
+    border:none;
+    border-radius:50%;
+    background:rgba(255,255,255,0.9);
+    box-shadow:0 2px 6px rgba(0,0,0,0.2);
+    cursor:pointer;
+    font-size:0.85rem;
+    display:flex; align-items:center; justify-content:center;
+  }
   .gallery-item img{width:100%; height:130px; object-fit:cover; display:block;}
   .gallery-item .cap{
     padding:8px 10px;
@@ -489,7 +501,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDlsyisWHdAJgzCuSWsQ0oHEVXE2WqTOKU",
@@ -645,6 +657,7 @@ proposals.forEach((p, idx)=>{
 
 /* ---------- galeria: acceso restringido ---------- */
 const GALLERY_ACCESS_CODE = "CROCS";
+let galleryUnlocked = false;
 document.getElementById('unlockBtn').addEventListener('click', ()=>{
   const input = document.getElementById('galleryCode').value.trim();
   const err = document.getElementById('lockError');
@@ -652,6 +665,8 @@ document.getElementById('unlockBtn').addEventListener('click', ()=>{
     document.getElementById('uploadLock').style.display = 'none';
     document.getElementById('uploadBox').style.display = 'block';
     err.textContent = '';
+    galleryUnlocked = true;
+    loadGallery();
   } else {
     err.textContent = 'Código incorrecto 😿';
   }
@@ -743,9 +758,28 @@ async function loadGallery(){
       const data = docSnap.data();
       const item = document.createElement('div');
       item.className = 'gallery-item';
-      item.innerHTML = `<img src="${data.dataUrl}"><div class="cap">${data.caption}</div>`;
+      item.innerHTML = `
+        <img src="${data.dataUrl}">
+        <div class="cap">${data.caption}</div>
+        ${galleryUnlocked ? `<button class="delete-photo-btn" data-id="${docSnap.id}">🗑️</button>` : ''}
+      `;
       grid.appendChild(item);
     });
+    if(galleryUnlocked){
+      grid.querySelectorAll('.delete-photo-btn').forEach(btn=>{
+        btn.addEventListener('click', async ()=>{
+          if(!confirm('¿Borrar esta foto de la galería?')) return;
+          try{
+            await deleteDoc(doc(db, 'gallery_photos', btn.dataset.id));
+            showToast('Foto borrada 🗑️');
+            loadGallery();
+          }catch(err){
+            console.error(err);
+            showToast('No se pudo borrar la foto 😿');
+          }
+        });
+      });
+    }
   }catch(err){
     console.error(err);
     grid.innerHTML = '<div class="gallery-empty">No se pudo cargar la galería 😿</div>';
