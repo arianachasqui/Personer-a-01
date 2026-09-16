@@ -411,6 +411,32 @@
   }
   .toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
 
+  .lightbox{
+    position:fixed; inset:0;
+    background:rgba(30,10,35,0.9);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+    padding:20px;
+  }
+  .lightbox.show{display:flex;}
+  .lightbox img{
+    max-width:100%;
+    max-height:90vh;
+    border-radius:14px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.4);
+  }
+  .lightbox-close{
+    position:absolute;
+    top:18px; right:22px;
+    color:#fff;
+    font-size:1.8rem;
+    cursor:pointer;
+    line-height:1;
+  }
+  .gallery-item img{cursor:zoom-in;}
+
   footer{
     text-align:center;
     color:#c090cc;
@@ -498,6 +524,11 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close" id="lightboxClose">✕</span>
+  <img src="" id="lightboxImg" alt="Foto ampliada">
+</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
@@ -763,6 +794,7 @@ async function loadGallery(){
         <div class="cap">${data.caption}</div>
         ${galleryUnlocked ? `<button class="delete-photo-btn" data-id="${docSnap.id}">🗑️</button>` : ''}
       `;
+      item.querySelector('img').addEventListener('click', ()=>openLightbox(data.dataUrl));
       grid.appendChild(item);
     });
     if(galleryUnlocked){
@@ -794,6 +826,20 @@ document.getElementById('sendWspBtn').addEventListener('click', ()=>{
   if(!text){ showToast('Escribe algo antes de enviar 🎀'); return; }
   const url = `https://wa.me/${BUZON_WHATSAPP_NUMBER}?text=${encodeURIComponent('Mensaje del buzón anónimo de Personería.\nEste mensaje es totalmente anónimo: solo se tendrá en cuenta el contenido, no quién lo envía.\n\n' + text)}`;
   window.open(url, '_blank');
+});
+
+/* ---------- lightbox: ver fotos en grande ---------- */
+function openLightbox(src){
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('show');
+}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('show');
+  document.getElementById('lightboxImg').src = '';
+}
+document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+document.getElementById('lightbox').addEventListener('click', (e)=>{
+  if(e.target.id === 'lightbox') closeLightbox();
 });
 
 /* ---------- init ---------- */
